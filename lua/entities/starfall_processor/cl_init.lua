@@ -48,33 +48,40 @@ function ENT:CodeSent ( files, main, owner )
 	if not ok then self:Error( msg, traceback ) end
 end
 
-
-local dlProc = nil
-local dlOwner = nil
-local dlMain = nil
-local dlFiles = nil
 local hashes = {}
 
-net.Receive( "starfall_processor_download", function ( len )
-	if not dlProc then
-		dlProc = net.ReadEntity()
-		dlOwner = net.ReadEntity()
-		dlMain = net.ReadString()
-		dlFiles = {}
-	else
-		if net.ReadBit() ~= 0 then
-			if dlProc:IsValid() then
-				dlProc:CodeSent( dlFiles, dlMain, dlOwner )
-				dlProc.files = dlFiles
-				dlProc.mainfile = dlMain
-			end
-			dlProc, dlFiles, dlMain, dlOwner = nil, nil, nil, nil
-			return
-		end
-		local filename = net.ReadString()
-		local filedata = net.ReadString()
-		dlFiles[ filename ] = dlFiles[ filename ] and dlFiles[ filename ] .. filedata or filedata
+local function checkFiles(files, numfiles, main, ent, ply)
+	if main and ent:IsValid() and ent.CodeSent and numfiles.Completed == numfiles.NumFiles then
+		ent:CodeSent( files, main, ply )
 	end
+end
+	
+net.Receive( "starfall_processor_download", function ( len )
+
+	local dlFiles = {}
+	local dlNumFiles = {}
+	local dlProc = net.ReadEntity()
+	local dlOwner = net.ReadEntity()
+	local dlMain = net.ReadString()
+	
+	local I = 0
+	while I < 256 do
+		if net.ReadBit() ~= 0 then break end
+		
+		local filename = net.ReadString()
+
+		net.ReadChunk( nil, function( data )
+			dlNumFiles.Completed = dlNumFiles.Completed + 1
+			dlFiles[ filename ] = data or ""
+			checkFiles( dlFiles, dlNumFiles, dlMain, dlProc, dlOwner )
+		end )
+		
+		I = I + 1
+	end
+
+	dlNumFiles.Completed = 0
+	dlNumFiles.NumFiles = I
+	checkFiles( dlFiles, dlNumFiles, dlMain, dlProc, dlOwner )
 end )
 
 net.Receive( "starfall_processor_update", function ( len )
