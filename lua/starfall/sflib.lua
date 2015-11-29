@@ -53,6 +53,8 @@ if SERVER then
 	AddCSLuaFile( "sfderma.lua" )
 	AddCSLuaFile( "callback.lua" )
 	AddCSLuaFile( "sfhelper.lua" )
+	
+	include( "moonscript.lua" )
 end
 
 -- Load files

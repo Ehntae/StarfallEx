@@ -98,6 +98,16 @@ end)
 function ENT:Compile(files, mainfile)
 	local update = self.mainfile ~= nil
 
+	local ppdata = {}
+	for name, code in pairs(files) do
+		SF.Preprocessor.ParseDirectives(name, code, {}, ppdata)
+		if ppdata.moonscript[name] then
+			local moon = {SF.MoonscriptToLua(code)}
+			PrintTable(moon)
+			files[name] = ""
+		end
+	end
+	
 	self.files = files
 	self.mainfile = mainfile
 
@@ -112,9 +122,6 @@ function ENT:Compile(files, mainfile)
 			net.WriteBit(true)
 		net.Broadcast()
 	end
-
-	local ppdata = {}
-	SF.Preprocessor.ParseDirectives(mainfile, files[mainfile], {}, ppdata)
 		
 	local ok, instance = SF.Compiler.Compile( files, context, mainfile, self.owner, { entity = self } )
 	if not ok then self:Error(instance) return end

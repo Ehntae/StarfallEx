@@ -157,11 +157,11 @@ local function directive_name(args, filename, data)
 end
 SF.Preprocessor.SetGlobalDirective("name",directive_name)
 
-local function directive_sharedscreen(args, filename, data)
-	if not data.sharedscreen then data.sharedscreen = true end
-	
+local function directive_moonscript(args, filename, data)
+	if not data.moonscript then data.moonscript = {} end
+	data.moonscript[filename] = true
 end
-SF.Preprocessor.SetGlobalDirective("sharedscreen",directive_sharedscreen)
+SF.Preprocessor.SetGlobalDirective("moonscript",directive_moonscript)
 
 local function directive_model( args, filename, data )
 	if not data.models then data.models = {} end
@@ -217,3 +217,12 @@ SF.Preprocessor.SetGlobalDirective( "model", directive_model )
 -- @usage
 -- \--@model models/props_junk/watermelon01.mdl
 -- -- CODE
+
+--- Set the script to be compiled using moonscript
+-- @name moonscript
+-- @class directive
+-- @param
+-- @usage
+-- \--@moonscript
+-- -- CODE
+-- print "hi"

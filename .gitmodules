@@ -1,0 +1,8 @@
+[submodule "lua/moonscript"]
+	path = lua/moonscript
+	url = https://github.com/thegrb93/moonscript
+	branch = gmod_safe
+[submodule "lua/lulpeg"]
+	path = lua/lulpeg
+	url = https://github.com/thegrb93/lulpeg
+	branch = gmod_safe

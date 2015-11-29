@@ -323,7 +323,7 @@ if CLIENT then
 
 		local function valid ()
 			local code = SF.Editor.getActiveTab().code
-
+			if code:find("--@moonscript", 1, true) then return end
 			local err = CompileString( code, "Validation", false )
 
 			if type( err ) ~= "string" then 
