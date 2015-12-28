@@ -102,9 +102,13 @@ function ENT:Compile(files, mainfile)
 	for name, code in pairs(files) do
 		SF.Preprocessor.ParseDirectives(name, code, {}, ppdata)
 		if ppdata.moonscript[name] then
-			local moon = {SF.MoonscriptToLua(code)}
-			PrintTable(moon)
-			files[name] = ""
+			local lua, err = SF.MoonscriptToLua(code)
+			if type(lua)=="string" then
+				files[name] = lua
+			else
+				self:Error(err)
+				return
+			end
 		end
 	end
 	
