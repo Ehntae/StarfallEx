@@ -33,6 +33,10 @@
 <ul>
 
 	<li>
+		<a href="../directives.html#client">--@client</a>
+	</li>
+
+	<li>
 		<a href="../directives.html#include">--@include</a>
 	</li>
 
@@ -48,6 +52,10 @@
 		<a href="../directives.html#name">--@name</a>
 	</li>
 
+	<li>
+		<a href="../directives.html#server">--@server</a>
+	</li>
+
 </ul>
 
 <!-- Module list -->
@@ -57,10 +65,6 @@
 
 	<li>
 		<a href="../libraries/bass.html">bass</a>
-	</li>
-
-	<li>
-		<a href="../libraries/bit.html">bit</a>
 	</li>
 
 	<li>
@@ -335,6 +339,10 @@
 	</li>
 
 	<li>
+		<a href="../hooks.html#calcview">calcview</a>
+	</li>
+
+	<li>
 		<a href="../hooks.html#input">input</a>
 	</li>
 
@@ -476,6 +484,12 @@ Deletes a file </td>
 	<td class="name" nowrap><a href="#file_library.exists">exists</a>&nbsp;(path)</td>
 	<td class="summary">
 Checks if a file exists </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#file_library.find">find</a>&nbsp;(path, sorting)</td>
+	<td class="summary">
+Enumerates a directory </td>
 	</tr>
 
 	<tr>
@@ -645,6 +659,50 @@ Checks if a file exists
 	<li>True if exists, false if not, nil if error</li>
 	
 	<li>Error message if applicable</li>
+	
+</ol>
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="file_library.find"></a><strong>file_library.find</strong>&nbsp;(path, sorting)</dt>
+<dd>
+
+Enumerates a directory
+
+
+
+
+<h3>Parameters:</h3>
+<ul>
+	
+	<li>
+	  <code><em>path</em></code>: The folder to enumerate, relative to data/sf_filedata/. Cannot contain '..'
+	</li>
+	
+	<li>
+	  <code><em>sorting</em></code>: Optional sorting arguement. Either nameasc, namedesc, dateasc, datedesc
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return values:</h3>
+<ol>
+	
+	<li>Table of file names</li>
+	
+	<li>Table of directory names</li>
 	
 </ol>
 
